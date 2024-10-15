@@ -47,7 +47,12 @@ bot.onText(/\/start/, async (msg) => {
   if (!user) {
     user = new User({ userId: chatId, username, isNew: true });
     await user.save();
-    bot.sendMessage(chatId, `Welcome ${username}! I'm here to uplift your spirit. Choose a category or schedule a daily message.`);
+    bot.sendMessage(chatId, `Welcome ${username}! I'm here to uplift your spirit. I'm here to share daily inspiration and help you stay motivated, strong, and peaceful.\n\n"
+                "- /start: Start interacting with me!\n"
+                "- /set_daily: Schedule daily messages at a time that works for you.\n"
+                "- /stop_daily: Stop receiving messages.\n"
+                "- /feedback: Share your feedback anytime!\n"
+                "Choose an option from the menu below to receive a message."`);
   } else {
     bot.sendMessage(chatId, `Welcome back ${username}! How can I help you today?`);
   }
