@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
     userId: Number,
     username: String,
-    isNew: Boolean,
+    isNewUser: Boolean,
     dailyTime: String, // HH:MM format
     feedback: String,
 });

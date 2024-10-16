@@ -14,9 +14,8 @@ const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
 const mongo = process.env.MONGO_URI;
-mongoose.connect(mongo, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Failed to connect to MongoDB', err));;
+mongoose.connect(mongo).then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Failed to connect to MongoDB', err));
 
 // Middlewares
 app.use(express.json());
@@ -31,12 +30,11 @@ bot.onText(/\/start/, async (msg) => {
   
     let user = await User.findOne({ userId: chatId });
     if (!user) {
-        if (!user) {
             // If the user doesn't exist, create a new user object and save it to the database
             user = new User({
                 userId: chatId,
                 username: username,
-                isNew: true,       // Mark this user as new
+                isNewUser: true,       // Mark this user as new
                 dailyTime: null,   // No daily message set yet
                 feedback: ''       // No feedback yet
             });
@@ -54,7 +52,6 @@ bot.onText(/\/start/, async (msg) => {
     }
 
     showMenu(chatId);
-}
 });
 
 // Inline buttons for categories
