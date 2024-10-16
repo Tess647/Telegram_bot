@@ -14,7 +14,9 @@ const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
 const mongo = process.env.MONGO_URI;
-mongoose.connect(mongo, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongo, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Failed to connect to MongoDB', err));;
 
 // Middlewares
 app.use(express.json());
@@ -29,15 +31,25 @@ bot.onText(/\/start/, async (msg) => {
   
     let user = await User.findOne({ userId: chatId });
     if (!user) {
-        user = new User({ userId: chatId, username, isNew: true });
-        await user.save();
-        bot.sendMessage(chatId, `Welcome ${username}! I'm here to uplift your spirit. I'm here to share daily inspiration and help you stay motivated, strong, and peaceful.\n\n"
-                "- /start: Start interacting with me!\n"
-                "- /set_daily: Schedule daily messages at a time that works for you.\n"
-                "- /stop_daily: Stop receiving messages.\n"
-                "- /feedback: Share your feedback anytime!\n"
-                "Choose an option from the menu below to receive a message."`);
-    } else {
+        if (!user) {
+            // If the user doesn't exist, create a new user object and save it to the database
+            user = new User({
+                userId: chatId,
+                username: username,
+                isNew: true,       // Mark this user as new
+                dailyTime: null,   // No daily message set yet
+                feedback: ''       // No feedback yet
+            });
+            
+            // Save the new user to MongoDB
+            await user.save();
+
+        bot.sendMessage(chatId, `Welcome ${username}! I'm here to uplift your spirit. I will share daily inspiration and help you stay motivated, strong, and peaceful.\n\n` +
+            `- /start: Start interacting with me!\n` +
+            `- /set_daily: Schedule daily messages at a time that works for you.\n` +
+            `- /stop_daily: Stop receiving messages.\n` +
+            `- /feedback: Share your feedback anytime!\n` +
+            `Choose an option from the menu below to receive a message.`);
         bot.sendMessage(chatId, `Welcome back ${username}! How can I help you today?`);
     }
 
