@@ -1,4 +1,5 @@
 // Import dependencies
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bot = require('./services/botService');
@@ -12,10 +13,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(con => {
-    console.log(con.connections);
-    console.log("Connected to the database successfully")
-});
+const mongo = process.env.MONGO_URI;
+console.log(mongo)
+mongoose.connect(mongo, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Middlewares
 app.use(express.json());
