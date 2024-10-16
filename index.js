@@ -14,7 +14,6 @@ const PORT = process.env.PORT || 3000;
 
 // MongoDB connection
 const mongo = process.env.MONGO_URI;
-console.log(mongo)
 mongoose.connect(mongo, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Middlewares
