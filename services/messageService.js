@@ -62,7 +62,7 @@ const messages = {
             "Peace begins with a smile.",
             "A calm mind brings inner strength.",
             "Let go of what you cannot change.",
-            "Peace is not the absence of trouble, but the presence of tranquility."
+            "Peace is not the absence of trouble, but the presence of tranquility.",
             "Breathe in peace, exhale worry.",
             "Do not let the behavior of others destroy your inner peace.",
             "Inner peace begins the moment you choose not to allow another person or event to control your emotions.",
