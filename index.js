@@ -54,6 +54,7 @@ bot.onText(/\/start/, async (msg) => {
     }
 
     showMenu(chatId);
+}
 });
 
 // Inline buttons for categories
