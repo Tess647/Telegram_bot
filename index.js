@@ -26,21 +26,19 @@ app.use('/', webhookRoutes);
 // Start command - personalized welcome
 bot.onText(/\/start/, async (msg) => {
     const chatId = msg.chat.id;
-    const username = msg.from.username;
-  
+    const username = msg.from.username || msg.from.first_name || 'User';  // Fallback to first_name or 'User' if no username
+
     let user = await User.findOne({ userId: chatId });
     if (!user) {
-            // If the user doesn't exist, create a new user object and save it to the database
-            user = new User({
-                userId: chatId,
-                username: username,
-                isNewUser: true,       // Mark this user as new
-                dailyTime: null,   // No daily message set yet
-                feedback: ''       // No feedback yet
-            });
-            
-            // Save the new user to MongoDB
-            await user.save();
+        user = new User({
+            userId: chatId,
+            username: username,
+            isNewUser: true,
+            dailyTime: null,
+            feedback: ''
+        });
+        
+        await user.save();
 
         bot.sendMessage(chatId, `Welcome ${username}! I'm here to uplift your spirit. I will share daily inspiration and help you stay motivated, strong, and peaceful.\n\n` +
             `- /start: Start interacting with me!\n` +
@@ -48,11 +46,13 @@ bot.onText(/\/start/, async (msg) => {
             `- /stop_daily: Stop receiving messages.\n` +
             `- /feedback: Share your feedback anytime!\n` +
             `Choose an option from the menu below to receive a message.`);
+    } else {
         bot.sendMessage(chatId, `Welcome back ${username}! How can I help you today?`);
     }
 
     showMenu(chatId);
 });
+
 
 // Inline buttons for categories
 function showMenu(chatId) {
